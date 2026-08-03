@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "Job Assist with AI. Scrape, Rank, Apply with custom Resume all with agents"
+title: "ai-job-assist"
+abstract: "Job Assist with AI. Scrape, Rank, Apply with custom Resume all with agents"
+authors:
+  - name: "Jeorge"
+version: 0.1.0
+license: "MIT"
+repository-code: "https://github.com/wp225/ai-job-assist"
+keywords:
+  - "python"
