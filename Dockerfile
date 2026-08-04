@@ -1,7 +1,7 @@
 # --- Builder stage ---
 # Use the official uv image (based on Debian Bookworm slim) as the build environment.
 # uv is used to resolve and install dependencies into a virtual environment.
-FROM ghcr.io/astral-sh/uv:python3.13-bookworm-slim AS builder
+FROM ghcr.io/astral-sh/uv:python3.13-trixie-slim as builder
 
 # Compile .pyc bytecode at install time so the runtime image starts faster,
 # and copy files into the venv instead of symlinking (required for multi-stage copies).
@@ -11,7 +11,7 @@ WORKDIR /app
 
 # Copy only the files needed to resolve dependencies first.
 # This allows Docker to cache the dependency-install layer independently of source changes.
-COPY pyproject.toml uv.lock README.md ./
+COPY pyproject.toml uv.lock README.md LICENSE ./
 # Install dependencies (excluding dev extras and the project itself) using the cache mount
 # to speed up repeated builds without storing the cache in the image layer.
 RUN --mount=type=cache,target=/root/.cache/uv \
@@ -28,6 +28,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 FROM python:3.13-slim
 
 WORKDIR /app
+EXPOSE 8000
 
 # Copy only the virtual environment and source from the builder stage,
 # leaving behind uv, caches, and any other build-time artifacts.
@@ -38,4 +39,4 @@ COPY --from=builder /app/src /app/src
 ENV PATH="/app/.venv/bin:$PATH"
 
 # Run the project's main module as the container's default command.
-CMD ["python", "-m", "ai_job_assist.ai_job_assist"]
+CMD ["uvicorn", "ai_job_assist.main:app", "--host", "0.0.0.0", "--port", "8000"]

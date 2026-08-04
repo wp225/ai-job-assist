@@ -18,6 +18,13 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
+    "fastapi",
+    "uvicorn",
+    "pydantic",
+    "pydantic-settings",
+    "anthropic",
+    "langgraph",
+    "langchain",
 ]
 
 [dependency-groups]
