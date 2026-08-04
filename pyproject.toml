@@ -33,6 +33,10 @@ dev = [
     "taskipy>=1.14.1",
     "zensical>=0.0.52",
     "pre-commit>=4.6.1",
+    "fastapi",
+    "pydantic",
+    "uvicorn",
+    "pydantic-settings"
 ]
 
 [project.urls]
