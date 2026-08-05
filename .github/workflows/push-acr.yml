@@ -1,17 +1,18 @@
 on: [push]
 name: ACR_Container_Workflow
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
     - name: "Checkout github Action"
       uses: actions/checkout@main
-
-    - name: "Azure Login"
-      uses: azure/login@v1
+    
+    - name: "Login to ACR"
+      uses: docker/login-action@v3
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS}}
+        registry: ${{ secrets.ACR_LOGIN_SERVER }}
+        username: ${{ secrets.ACR_USERNAME }}
+        password: ${{ secrets.ACR_PASSWORD }}
     
     - name: "Build and push Docker Image"
       uses: docker/build-push-action@v5
@@ -20,13 +21,15 @@ jobs:
         platforms: linux/amd64
         push: true
         tags: aijobassist.azurecr.io/ai-job-assist:latest
-        registry: ${{ secrets.ACR_LOGIN_SERVER}}
-        username: ${{ secrets.ACR_USERNAME}}
-        password: ${{ secrets.ACR_PASSWORD}}
+
+    - name: "Azure Login"
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: "Update Container Instance"
       run: |
-          az container update \
-            --resource-group ML \
-            --name ai-job-assist-container \
-            --image aijobassist.azurecr.io/ai-job-assist:latest 
+        az container update \
+          --resource-group ML \
+          --name ai-job-assist-container \
+          --image aijobassist.azurecr.io/ai-job-assist:latest
