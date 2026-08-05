@@ -27,7 +27,5 @@ jobs:
       with:
         azcliversion: latest
         inlineScript: |
-          az container update \
-            --resource-group ML \
-            --name ai-job-assist-container \
-            --image aijobassist.azurecr.io/ai-job-assist:latest
+          az login --service-principal -u ${{ secrets.AZURE_USERNAME }} -p ${{ secrets.AZURE_PASSWORD }} --tenant ${{ secrets.AZURE_TENANT_ID }}
+          az container update --resource-group ML --name ai-job-assist-container --image aijobassist.azurecr.io/ai-job-assist:latest
