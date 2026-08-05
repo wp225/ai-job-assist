@@ -8,12 +8,10 @@ jobs:
     - name: "Checkout github Action"
       uses: actions/checkout@main
 
-     - name: "Azure Login"
+    - name: "Azure Login"
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS}}
-
-
     
     - name: "Build and push Docker Image"
       uses: docker/build-push-action@v5
