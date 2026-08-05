@@ -1,7 +1,7 @@
 # --- Builder stage ---
 # Use the official uv image (based on Debian Bookworm slim) as the build environment.
 # uv is used to resolve and install dependencies into a virtual environment.
-FROM ghcr.io/astral-sh/uv:python3.13-trixie-slim as builder
+FROM ghcr.io/astral-sh/uv:python3.13-trixie-slim AS builder
 
 # Compile .pyc bytecode at install time so the runtime image starts faster,
 # and copy files into the venv instead of symlinking (required for multi-stage copies).
