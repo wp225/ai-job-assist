@@ -8,7 +8,7 @@ jobs:
     - name: "Checkout github Action"
       uses: actions/checkout@main
     
-    - name: "Build and push Docker Image""
+    - name: "Build and push Docker Image"
       uses: docker/build-push-action@v5
       with:
         context: .
