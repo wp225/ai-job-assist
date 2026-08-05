@@ -23,9 +23,19 @@ jobs:
         tags: aijobassist.azurecr.io/ai-job-assist:latest
 
     - name: "Update Container Instance"
-      uses: azure/cli@v1
-      with:
-        azcliversion: latest
-        inlineScript: |
-          az login -u ${{ secrets.AZURE_USERNAME }} -p ${{ secrets.AZURE_PASSWORD }} --tenant ${{ secrets.AZURE_TENANT_ID }}
-          az container update --resource-group ML --name ai-job-assist-container --image aijobassist.azurecr.io/ai-job-assist:latest
+      run: |
+        az login -u ${{ secrets.AZURE_USERNAME }} -p ${{ secrets.AZURE_PASSWORD }} --tenant ${{ secrets.AZURE_TENANT_ID }}
+        az container delete --resource-group ML --name ai-job-assist-container --yes
+        az container create \
+          --resource-group ML \
+          --name ai-job-assist-container \
+          --image aijobassist.azurecr.io/ai-job-assist:latest \
+          --registry-login-server aijobassist.azurecr.io \
+          --registry-username ${{ secrets.ACR_USERNAME }} \
+          --registry-password ${{ secrets.ACR_PASSWORD }} \
+          --ports 8000 \
+          --ip-address Public \
+          --cpu 1 \
+          --memory 1 \
+          --location westus2 \
+          --os-type Linux
