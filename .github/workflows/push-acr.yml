@@ -13,7 +13,7 @@ jobs:
         registry: ${{ secrets.ACR_LOGIN_SERVER }}
         username: ${{ secrets.ACR_USERNAME }}
         password: ${{ secrets.ACR_PASSWORD }}
-    
+
     - name: "Build and push Docker Image"
       uses: docker/build-push-action@v5
       with:
@@ -22,14 +22,12 @@ jobs:
         push: true
         tags: aijobassist.azurecr.io/ai-job-assist:latest
 
-    - name: "Azure Login"
-      uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-
     - name: "Update Container Instance"
-      run: |
-        az container update \
-          --resource-group ML \
-          --name ai-job-assist-container \
-          --image aijobassist.azurecr.io/ai-job-assist:latest
+      uses: azure/cli@v1
+      with:
+        azcliversion: latest
+        inlineScript: |
+          az container update \
+            --resource-group ML \
+            --name ai-job-assist-container \
+            --image aijobassist.azurecr.io/ai-job-assist:latest
