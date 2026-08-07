@@ -25,6 +25,8 @@ dependencies = [
     "anthropic",
     "langgraph",
     "langchain",
+    "pypdf",
+    "python-multipart"
 ]
 
 [dependency-groups]

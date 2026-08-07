@@ -7,3 +7,4 @@ class AnalyzeRequest(BaseModel):
 class AnalyzeResponse(BaseModel):
     fit_score: float = Field(le = 100, ge = 0)
     summary: str
+    
